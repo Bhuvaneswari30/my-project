@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title or "Shopora — Everyday, considered." }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="announcement">Free shipping on orders over ₹5,000 <span>✦</span> Thoughtful objects, delivered.</div>
+  <header class="site-header">
+    <a class="logo" href="{{ url_for('index') }}">shopora<span>.</span></a>
+    <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+    <nav class="main-nav">
+      <a href="{{ url_for('products') }}">Shop</a><a href="{{ url_for('about') }}">Our story</a><a href="{{ url_for('faq') }}">FAQ</a><a href="{{ url_for('contact') }}">Contact</a>
+    </nav>
+    <form class="search" action="{{ url_for('products') }}" method="get">
+      <input id="search-input" name="q" value="{{ request.args.get('q', '') }}" placeholder="Search the collection…" autocomplete="off">
+      <button aria-label="Search">⌕</button><div id="suggestions"></div>
+    </form>
+    <div class="header-actions">
+      {% if current_user.is_authenticated %}
+        {% if current_user.role == 'admin' %}
+          <a class="text-link" style="background:#1f2937; color:#ffffff; padding:5px 12px; border-radius:6px; font-weight:700; text-decoration:none; margin-right:10px; font-size:13px;" href="{{ url_for('admin_dashboard') }}">⚙️ Admin Panel</a>
+        {% endif %}
+        <a href="{{ url_for('profile') }}" title="Profile">◎</a><a href="{{ url_for('wishlist') }}" title="Wishlist">♡<sup>{{ wishlist_count }}</sup></a><a href="{{ url_for('cart') }}" title="Cart">▢<sup>{{ cart_count }}</sup></a>
+      {% else %}<a class="text-link" href="{{ url_for('login') }}">Sign in</a>{% endif %}
+    </div>
+  </header>
+  <main>
+    {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-wrap">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}<button onclick="this.parentElement.remove()">×</button></div>{% endfor %}</div>{% endif %}{% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="site-footer">
+    <div><a class="logo light" href="{{ url_for('index') }}">shopora<span>.</span></a><p>Useful objects for everyday life.<br>Designed to last, made to matter.</p></div>
+    <div><h4>Explore</h4><a href="{{ url_for('products') }}">All products</a><a href="{{ url_for('about') }}">Our story</a><a href="{{ url_for('faq') }}">FAQ</a></div>
+    <div><h4>Help</h4><a href="{{ url_for('contact') }}">Contact</a><a href="#">Shipping & returns</a><a href="#">Privacy</a></div>
+    <div><h4>Stay in the loop</h4><p>New releases, useful notes, no noise.</p><form class="newsletter"><input type="email" placeholder="Your email"><button>→</button></form></div>
+    <div class="footer-bottom">© {{ year }} Shopora · Made for better everyday rituals.</div>
+  </footer>
+  <script>window.csrfToken = "{{ session.csrf_token }}";</script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

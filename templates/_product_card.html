@@ -1,0 +1,5 @@
+<article class="product-card">
+  <a class="product-image" href="{{ url_for('product_detail', product_id=product.id) }}"><img src="{{ product.image }}" alt="{{ product.name }}"><span class="image-tag">{% if product.discount_percent %}-{{ product.discount_percent }}%{% else %}NEW{% endif %}</span></a>
+  <div class="product-meta"><div><p class="product-brand">{{ product.brand }}</p><h3><a href="{{ url_for('product_detail', product_id=product.id) }}">{{ product.name }}</a></h3></div><div class="price">{% if product.discount_price %}<del>₹{{ "{:,.0f}".format(product.price) }}</del>{% endif %}<strong>₹{{ "{:,.0f}".format(product.current_price) }}</strong></div></div>
+  <div class="product-bottom"><span class="stars">★ {{ product.rating }}</span><span class="{% if product.stock < 10 %}low-stock{% endif %}">{% if product.stock == 0 %}Sold out{% elif product.stock < 10 %}Only {{ product.stock }} left{% else %}In stock{% endif %}</span></div>
+</article>

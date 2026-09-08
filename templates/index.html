@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block content %}
+<section class="hero">
+  <div class="hero-copy"><p class="eyebrow">THE EVERYDAY EDIT · 2026</p><h1>Less, but<br><em>better.</em></h1><p class="hero-intro">A considered collection of objects that make the everyday feel a little more intentional.</p><a class="button dark" href="{{ url_for('products') }}">Explore the collection <span>↗</span></a></div>
+  <div class="hero-art"><div class="sun"></div><div class="hero-card"><span>NEW SEASON</span><strong>Objects<br>with a point<br>of view.</strong><small>SHOPORA / 01</small></div></div>
+</section>
+<section class="section"><div class="section-head"><div><p class="eyebrow">CURATED FOR YOU</p><h2>Best in show</h2></div><a class="arrow-link" href="{{ url_for('products', sort='rating') }}">View all ↗</a></div><div class="product-grid">{% for product in featured %}{% include "_product_card.html" %}{% endfor %}</div></section>
+<section class="category-strip"><div><p class="eyebrow">FIND YOUR FOCUS</p><h2>Shop by mood.</h2></div>{% for category in categories %}<a href="{{ url_for('products', category=category.name) }}"><span>{{ "%02d"|format(loop.index) }}</span><strong>{{ category.name }}</strong><b>↗</b></a>{% endfor %}</section>
+<section class="split-banner"><div><p class="eyebrow">THE SHOPORA STANDARD</p><h2>Good design should<br><em>disappear</em> into life.</h2><p>We look for honest materials, considered details, and things you will reach for every day.</p><a class="arrow-link light-link" href="{{ url_for('about') }}">Read our story ↗</a></div><div class="banner-shape"><div></div></div></section>
+<section class="section"><div class="section-head"><div><p class="eyebrow">JUST IN</p><h2>Fresh arrivals</h2></div><a class="arrow-link" href="{{ url_for('products', sort='newest') }}">See everything ↗</a></div><div class="product-grid">{% for product in newest %}{% include "_product_card.html" %}{% endfor %}</div></section>
+{% endblock %}
